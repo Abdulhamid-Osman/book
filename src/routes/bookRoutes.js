@@ -61,8 +61,7 @@ bookRouter.route("/:id")
            { 
                nav: [{link: "/books", title: "Books"},{link: "/authors", title: "Authors"}],
                title: "Books center",
-                book: books[id],
-                singleBook: books.title,
+                book: books[id]
                 
             }
         )
