@@ -20,8 +20,12 @@ app.use("/jquery", express.static(path.join(__dirname, "/node_modules/jquery/dis
 app.set("views", "./src/views");
 app.set("view engine", "ejs");
 
-
-const bookRouter = require("./src/routes/bookRoutes");
+const nav = [{ link:"/books", title:"Book" }, 
+// eslint-disable-next-line no-dupe-keys
+{ link:"/authors", title:"Author"
+}
+]
+const bookRouter = require("./src/routes/bookRoutes")(nav);
 app.use("/books", bookRouter)
 app.get("/",(req,res)=>{
     // eslint-disable-next-line no-undef
