@@ -3,12 +3,21 @@ const chalk = require("chalk");
 const debug = require("debug")("app");
 const morgan = require("morgan");
 const path = require("path")
+const bodyParser = require("body-parser");
+const passport = require("passport");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 const app = express();
 
  // eslint-disable-next-line no-undef
  const port = process.env.PORT || 3000
  
 app.use(morgan("combined"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(session({ secret: "library"}))
+require("./src/config/passport.js")(app);
 // eslint-disable-next-line no-undef
 app.use(express.static(path.join(__dirname, "/public")));
 // eslint-disable-next-line no-undef
@@ -26,7 +35,11 @@ const nav = [{ link:"/books", title:"Book" },
 }
 ]
 const bookRouter = require("./src/routes/bookRoutes")(nav);
+const adminRouter = require("./src/routes/adminRouter")(nav);
+const authRouter = require("./src/routes/authRoutes")(nav);
 app.use("/books", bookRouter)
+app.use("/admin", adminRouter)
+app.use("/auth", authRouter)
 app.get("/",(req,res)=>{
     // eslint-disable-next-line no-undef
     res.render("index", 
